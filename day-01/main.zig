@@ -1,6 +1,14 @@
 // https://adventofcode.com/2023/day/1
 
 const std = @import("std");
+const words = std.ComptimeStringMap(u8, .{ .{ "one", 1 }, .{ "two", 2 }, .{ "three", 3 }, .{ "four", 4 }, .{ "five", 5 }, .{ "six", 6 }, .{ "seven", 7 }, .{ "eight", 8 }, .{ "nine", 9 } });
+
+fn maybeWord(chars: []const u8) ?u8 {
+    for (words.kvs) |kv| {
+        if (std.mem.indexOf(u8, chars, kv.key) != null) return words.get(kv.key);
+    }
+    return null;
+}
 
 fn maybeDigit(char: u8) ?u8 {
     if (std.ascii.isDigit(char)) {
@@ -15,20 +23,20 @@ test maybeDigit {
     try std.testing.expect(maybeDigit('1').? == 1);
 }
 
-// TODO: solve for one O(n) pass next time?
+// TODO: is it possible to get better time complexity?
 fn getTwoDigits(line: []const u8) !u8 {
     var l: usize = 0;
     var r: usize = line.len - 1;
     var result: u8 = 0;
     while (l <= line.len - 1) {
-        if (maybeDigit(line[l])) |digit| {
+        if (maybeWord(line[0..l]) orelse maybeDigit(line[l])) |digit| {
             result = digit * 10;
             break;
         }
         l += 1;
     }
     while (r >= 0) {
-        if (maybeDigit(line[r])) |digit| {
+        if (maybeWord(line[r..]) orelse maybeDigit(line[r])) |digit| {
             result += digit;
             break;
         }
@@ -52,7 +60,7 @@ pub fn main() !void {
     while (lines.next()) |line| {
         if (line.len == 0) continue;
         var digits = try getTwoDigits(line);
-        // std.debug.print("{d}\n", .{value});
+        // std.debug.print("{s}\n -> {d}\n", .{ line, digits });
         answer += digits;
     }
     std.debug.print("Answer: {d}\n", .{answer});
