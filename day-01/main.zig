@@ -38,7 +38,7 @@ fn getTwoDigits(line: []const u8) !u8 {
 }
 
 pub fn main() !void {
-    var path = "day-01/input.txt";
+    const path = "day-01/input.txt";
     var file = try std.fs.cwd().openFile(path, .{});
     defer file.close();
 
