@@ -38,13 +38,13 @@ int getTwoDigits(char* line) {
 
 int main() {
     const char *path = "day-01/input.txt";
-    int answer = 0;
     FILE *fd;
     if ((fd = fopen(path, "r")) == NULL) {
         perror("Can't open input file");
     }
     const char *line;
     int digits;
+    int answer = 0;
     while (fgets(line, 256, fd)) {
         if (strlen(line) == 0) continue;
         digits = getTwoDigits(line);
