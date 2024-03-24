@@ -1,7 +1,6 @@
 // https://adventofcode.com/2023/day/1
 
 const std = @import("std");
-const day = "day-01";
 
 fn maybeDigit(char: u8) ?u8 {
     if (std.ascii.isDigit(char)) {
@@ -30,7 +29,7 @@ fn getTwoDigits(line: []const u8) !u8 {
     }
     while (r >= 0) {
         if (maybeDigit(line[r])) |digit| {
-            result = result + digit;
+            result += digit;
             break;
         }
         r -= 1;
@@ -39,7 +38,7 @@ fn getTwoDigits(line: []const u8) !u8 {
 }
 
 pub fn main() !void {
-    var path = day ++ "/input.txt";
+    var path = "day-01/input.txt";
     var file = try std.fs.cwd().openFile(path, .{});
     defer file.close();
 
@@ -48,14 +47,13 @@ pub fn main() !void {
 
     // TODO: how to read the file line by line and process it simultaneously?
     var input = try file.readToEndAlloc(alloc, 1024 * 1024);
-
     var answer: u64 = 0;
     var lines = std.mem.split(u8, input, "\n");
     while (lines.next()) |line| {
         if (line.len == 0) continue;
-        var value = try getTwoDigits(line);
+        var digits = try getTwoDigits(line);
         // std.debug.print("{d}\n", .{value});
-        answer += value;
+        answer += digits;
     }
     std.debug.print("Answer: {d}\n", .{answer});
 }
