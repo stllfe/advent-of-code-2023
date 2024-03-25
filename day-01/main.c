@@ -3,32 +3,66 @@
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
+#include <stdlib.h>
 
-int maybeDigit(char c) {
+#define MAX_LINE_SIZE 256
+#define N_NUMBERS 9
+
+const char *WORDS[N_NUMBERS] = {"one", "two", "three", "four", "five", "six", "seven", "eight", "nine"};
+
+char maybeWord(char* chars) {
+    for (int i = 0; i < N_NUMBERS; ++i)
+    {
+        if (strstr(chars, WORDS[i]) != NULL) {
+            return i + 1;
+        }
+    }
+    return -1;
+}
+
+char maybeDigit(char c) {
     if (isdigit((unsigned char) c)) {
         return c - '0';
     }
     return -1;
 }
 
-// TODO: solve for one O(n) pass next time?
-int getTwoDigits(char* line) {
-    size_t l, r;
-    size_t n = strlen(line);
-    l = 0;
-    r = n - 1;
-    int result = 0;
-    int digit;
-    while (l <= n - 1) {
-        if ((digit = maybeDigit(line[l])) != -1) {
-            result = digit * 10;
+char *getSubStr(const char * src, size_t len) {
+    char *sub = malloc(len);
+    if (!sub) {
+        perror("Can't allocate a substring!");
+        exit(1);
+    }
+    strncpy(sub, src, len);
+    sub[len - 1] = '\0';  // null termination
+    return sub;
+}
+
+// TODO: improve time complexity?
+unsigned char getTwoDigits(char* line) {
+    unsigned int l = 0, r = strlen(line) - 1;
+    unsigned char result = 0;
+    char digit;
+    while (l <= r) {
+        // that's a hacky way to get a leftmost substring
+        // TODO: are there a better alternatives?
+        char *subline = getSubStr(line, l + 1);
+        // printf("%s\n", sub);
+        char w = maybeWord(subline);
+        char d = maybeDigit(line[l]);
+        free(subline);
+        if ((digit = w != -1 ? w : d) != -1)
+        {
+            result = (unsigned char) digit * 10;
             break;
         }
         l++;
     }
     while (r >= 0) {
-        if ((digit = maybeDigit(line[r])) != -1) {
-            result += digit;
+        char w = maybeWord(&line[r]);
+        char d = maybeDigit(line[r]);
+        if ((digit = w != -1 ? w : d) != -1) {
+            result += (unsigned char) digit;
             break;
         }
         r--;
@@ -39,16 +73,19 @@ int getTwoDigits(char* line) {
 int main() {
     const char *path = "day-01/input.txt";
     FILE *fd;
+    char line[MAX_LINE_SIZE];
+
     if ((fd = fopen(path, "r")) == NULL) {
         perror("Can't open input file");
+        return 1;
     }
-    const char *line;
-    int digits;
+
     int answer = 0;
-    while (fgets(line, 256, fd)) {
-        if (strlen(line) == 0) continue;
-        digits = getTwoDigits(line);
-        // printf("%s -> %d\n", line, digits);
+    while (fgets(line, MAX_LINE_SIZE, fd) != NULL) {
+        if (strlen(line) == 0)
+            continue;
+        unsigned char digits = getTwoDigits(line);
+        //printf("%s -> %d\n", line, digits);
         answer += digits;
     }
     fclose(fd);
