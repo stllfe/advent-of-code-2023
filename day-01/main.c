@@ -45,7 +45,7 @@ unsigned char getTwoDigits(char* line) {
     char digit;
     while (l <= r) {
         // that's a hacky way to get a leftmost substring
-        // TODO: are there a better alternatives?
+        // TODO: are there better alternatives?
         char *subline = getSubStr(line, l + 1);
         // printf("%s\n", sub);
         char w = maybeWord(subline);
