@@ -4,7 +4,7 @@ Learning Zig and C by solving [Advent of Code (AoC) 2023](https://adventofcode.c
 
 ## Solved days
 
-- [ ] Day 01
+- [x] Day 01
 - [ ] Day 02
 - [ ] Day 03
 - [ ] Day 04
