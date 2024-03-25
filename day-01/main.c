@@ -65,6 +65,7 @@ unsigned char getTwoDigits(char* line) {
             result += (unsigned char) digit;
             break;
         }
+        if (r == 0) break;
         r--;
     }
     return result;

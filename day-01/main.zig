@@ -48,7 +48,7 @@ fn getTwoDigits(line: []const u8) !u8 {
             result += digit;
             break;
         }
-        r -= 1;
+        r -%= 1;
     }
     return result;
 }
