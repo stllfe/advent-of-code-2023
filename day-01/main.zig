@@ -18,12 +18,20 @@ fn maybeDigit(char: u8) ?u8 {
 }
 
 test maybeDigit {
-    try std.testing.expect(maybeDigit('0').? == 0);
-    try std.testing.expect(maybeDigit('9').? == 9);
-    try std.testing.expect(maybeDigit('1').? == 1);
+    try std.testing.expectEqual(maybeDigit('0').?, 0);
+    try std.testing.expectEqual(maybeDigit('1').?, 1);
+    try std.testing.expectEqual(maybeDigit('2').?, 2);
+    try std.testing.expectEqual(maybeDigit('3').?, 3);
+    try std.testing.expectEqual(maybeDigit('4').?, 4);
+    try std.testing.expectEqual(maybeDigit('5').?, 5);
+    try std.testing.expectEqual(maybeDigit('6').?, 6);
+    try std.testing.expectEqual(maybeDigit('7').?, 7);
+    try std.testing.expectEqual(maybeDigit('8').?, 8);
+    try std.testing.expectEqual(maybeDigit('9').?, 9);
+    try std.testing.expectEqual(maybeDigit('o'), null);
 }
 
-// TODO: is it possible to get better time complexity?
+// TODO: get better time complexity?
 fn getTwoDigits(line: []const u8) !u8 {
     var l: usize = 0;
     var r: usize = line.len - 1;
