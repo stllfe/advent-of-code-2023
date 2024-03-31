@@ -1,11 +1,11 @@
 // https://adventofcode.com/2023/day/1
 
 const std = @import("std");
-const words = std.ComptimeStringMap(u8, .{ .{ "one", 1 }, .{ "two", 2 }, .{ "three", 3 }, .{ "four", 4 }, .{ "five", 5 }, .{ "six", 6 }, .{ "seven", 7 }, .{ "eight", 8 }, .{ "nine", 9 } });
+const WORDS = std.ComptimeStringMap(u8, .{ .{ "one", 1 }, .{ "two", 2 }, .{ "three", 3 }, .{ "four", 4 }, .{ "five", 5 }, .{ "six", 6 }, .{ "seven", 7 }, .{ "eight", 8 }, .{ "nine", 9 } });
 
 fn maybeWord(chars: []const u8) ?u8 {
-    for (words.kvs) |kv| {
-        if (std.mem.indexOf(u8, chars, kv.key) != null) return words.get(kv.key);
+    for (WORDS.kvs) |kv| {
+        if (std.mem.indexOf(u8, chars, kv.key) != null) return WORDS.get(kv.key);
     }
     return null;
 }

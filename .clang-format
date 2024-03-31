@@ -1,0 +1,10 @@
+---
+BasedOnStyle: Google
+AlignConsecutiveAssignments: 'false'
+AlignConsecutiveDeclarations: 'false'
+AlignOperands: 'false'
+IndentWidth: '4'
+TabWidth: '4'
+UseTab: Never
+
+...

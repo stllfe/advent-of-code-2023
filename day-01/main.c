@@ -1,18 +1,18 @@
 // https://adventofcode.com/2023/day/1
 
-#include <stdio.h>
-#include <string.h>
 #include <ctype.h>
+#include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #define MAX_LINE_SIZE 256
 #define N_NUMBERS 9
 
-const char *WORDS[N_NUMBERS] = {"one", "two", "three", "four", "five", "six", "seven", "eight", "nine"};
+const char *WORDS[N_NUMBERS] = {"one", "two",   "three", "four", "five",
+                                "six", "seven", "eight", "nine"};
 
-char maybeWord(char* chars) {
-    for (int i = 0; i < N_NUMBERS; ++i)
-    {
+char maybeWord(char *chars) {
+    for (int i = 0; i < N_NUMBERS; ++i) {
         if (strstr(chars, WORDS[i]) != NULL) {
             return i + 1;
         }
@@ -21,13 +21,13 @@ char maybeWord(char* chars) {
 }
 
 char maybeDigit(char c) {
-    if (isdigit((unsigned char) c)) {
+    if (isdigit((unsigned char)c)) {
         return c - '0';
     }
     return -1;
 }
 
-char *getSubStr(const char * src, size_t len) {
+char *getSubStr(const char *src, size_t len) {
     char *sub = malloc(len);
     if (!sub) {
         perror("Can't allocate a substring!");
@@ -39,7 +39,7 @@ char *getSubStr(const char * src, size_t len) {
 }
 
 // TODO: improve time complexity?
-unsigned char getTwoDigits(char* line) {
+unsigned char getTwoDigits(char *line) {
     unsigned int l = 0, r = strlen(line) - 1;
     unsigned char result = 0;
     char digit;
@@ -51,9 +51,8 @@ unsigned char getTwoDigits(char* line) {
         char w = maybeWord(subline);
         char d = maybeDigit(line[l]);
         free(subline);
-        if ((digit = w != -1 ? w : d) != -1)
-        {
-            result = (unsigned char) digit * 10;
+        if ((digit = w != -1 ? w : d) != -1) {
+            result = (unsigned char)digit * 10;
             break;
         }
         l++;
@@ -62,7 +61,7 @@ unsigned char getTwoDigits(char* line) {
         char w = maybeWord(&line[r]);
         char d = maybeDigit(line[r]);
         if ((digit = w != -1 ? w : d) != -1) {
-            result += (unsigned char) digit;
+            result += (unsigned char)digit;
             break;
         }
         if (r == 0) break;
@@ -83,10 +82,9 @@ int main() {
 
     int answer = 0;
     while (fgets(line, MAX_LINE_SIZE, fd) != NULL) {
-        if (strlen(line) == 0)
-            continue;
+        if (strlen(line) == 0) continue;
         unsigned char digits = getTwoDigits(line);
-        //printf("%s -> %d\n", line, digits);
+        // printf("%s -> %d\n", line, digits);
         answer += digits;
     }
     fclose(fd);
