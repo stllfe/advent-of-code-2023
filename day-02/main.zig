@@ -87,6 +87,18 @@ fn isPossible(game: Game) bool {
     return true;
 }
 
+fn getFewestNumberOfCubesPossible(turns: []const Turn) Turn {
+    var r: u8 = 0;
+    var g: u8 = 0;
+    var b: u8 = 0;
+    for (turns) |turn| {
+        r = @max(turn.red, r);
+        g = @max(turn.green, g);
+        b = @max(turn.blue, b);
+    }
+    return Turn{ .red = r, .green = g, .blue = b };
+}
+
 pub fn main() !void {
     const path = "day-02/input.txt";
     const file = try std.fs.cwd().openFile(path, .{});
@@ -104,16 +116,23 @@ pub fn main() !void {
     const reader = buff.reader();
     const writer = line.writer();
 
-    var answer: u32 = 0;
+    var part_1_answer: u32 = 0;
+    var part_2_answer: u32 = 0;
+
     while (reader.streamUntilDelimiter(writer, '\n', null)) {
         defer line.clearRetainingCapacity();
-        std.debug.print("{s}\n", .{line.items});
+        // std.debug.print("{s}\n", .{line.items});
         var game = try parseGame(line.items, allocator);
-        std.debug.print("->{any}\n\n", .{game});
-        if (isPossible(game)) answer += game.id;
+        // std.debug.print("->{any}\n\n", .{game});
+        if (isPossible(game)) part_1_answer += game.id;
+        var turn = getFewestNumberOfCubesPossible(game.turns);
+        // compute the power of the set of cubes
+        // TODO: maybe we could just use u32 everywhere to avoid this conversion?
+        part_2_answer += @as(u32, turn.red) * @as(u32, turn.green) * @as(u32, turn.blue);
     } else |err| switch (err) {
         error.EndOfStream => {}, // we just finished reading, no worries
         else => return err, // propogate error
     }
-    std.debug.print("Answer: {d}\n", .{answer});
+    std.debug.print("(P1) Answer: {d}\n", .{part_1_answer});
+    std.debug.print("(P2) Answer: {d}\n", .{part_2_answer});
 }
