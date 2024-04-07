@@ -1,4 +1,3 @@
-#include <math.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -70,6 +69,11 @@ void fillInTurnInfo(char *color_str, struct Turn *turn) {
 
 // Parses strings like:
 // Game 1: 14 green, 8 blue, 9 red; 5 blue, 4 green, 2 red
+//
+// TODO: I almost don't get a thing of what am I doing here, but it works!
+// followed this:
+// https://stackoverflow.com/questions/70820551/efficient-string-parsing-in-c
+// TODO: get a sence of this low-level string pointers manipulation...
 void parseGame(char *line, struct Game *game) {
     static const char *space = " ";
     static const char *game_sep = ":";
@@ -118,7 +122,7 @@ void parseGame(char *line, struct Game *game) {
         while (*turn_str) {
             // parse turn colors
             char *color_str = turn_str;
-            turn_str = strchr(turn_str, ',');
+            turn_str = strchr(turn_str, comma);
             if (!turn_str) {
                 // skip leading whitespace
                 // printf("  color string: %s\n", color);
@@ -153,7 +157,6 @@ int main() {
     int part_1_answer = 0;
     int part_2_answer = 0;
     while (fgets(line, INPUT_LINE_LENGTH, fd) != NULL) {
-        // printf(line);
         struct Game game;
         parseGame(line, &game);
         if (isPossible(&game)) part_1_answer += game.id;
