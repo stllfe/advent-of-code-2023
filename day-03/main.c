@@ -8,7 +8,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <sys/_types/_null.h>
 
 #define INPUT_LINE_LENGTH 256
 
